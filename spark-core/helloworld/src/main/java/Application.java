@@ -23,5 +23,6 @@ public class Application {
         JavaPairRDD<String, Integer> ones = words.mapToPair(s -> new Tuple2<>(s, 1));
         JavaPairRDD<String, Integer> counted = ones.reduceByKey((s, r) -> s + r);
         counted.saveAsTextFile("result");
+        context.stop();
     }
 }
