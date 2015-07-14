@@ -1,0 +1,78 @@
+# Python shell
+# 1: DataFrame API
+=================================================
+df = sqlContext.read.format("json").load("ingatlan.csv")
+df = sqlContext.read.json("tweets")
+
+i.write.format("json").mode("append").partitionBy("KERULET").saveAsTable("mytable")
+
+## Displays the content of the DataFrame to stdout
+df.show()
+df.columns
+df.dtypes
+df.describe.show()
+df['text', 'id','user.name'].show()
+
+i.groupby('KERULET').agg(i['KERULET'], f.mean("AR")).show()
+w = pyspark.sql.Window.partitionBy('KERULET').orderBy('AR')
+df.select( mean("AR").over(w.rangeBetween(30,50))
+
+df = sqlContext.range(0, 10)
+
+kerddf = df.select(df['KERULET']).distinct()
+randker = kerdf.select(df['KERULET'],rand(seed=10).alias('uniform'), randn(seed=27).alias('normal'))
+
+# Statistical descriptors
+randker.stat.corr('uniform', 'normal')
+
+
+# Contingency Table
+airlines = ["MALEV", "KLM", "UA", "DA"]
+airplane = ["TUP-197", "BOE-747", "BOE-737", "A318", "A320", "A380"]
+obs2 = sqlContext.createDataFrame([airlines[i % 4], airplane[i % 6]] for i in range(100))
+obs.groupby(['_1','_2']).count().show()
+obs2.crosstab('_1', '_2').show()
+
+fisc = sqlContext.createDataFrame([airlines[i % 4], [12.3,34.2,542.3,54.2][i%4]] for i in range(4))
+
+bs2.join(fisc, obs2['_1'] == fisc['_1'], "leftouter").select([obs2['_1'], fisc['_2']]).distinct().show()
+
+sqlContext.sql("SELECT 6*60/4").show()
+
+=================================================
+
+# 2: API
+=================================================
+# .read is the 1.4 API
+df = sqlContext.read.json("tweets")
+
+df.printSchema()
+df.select('user').printSchema()
+df.count()
+df.filter(df["AR"] > 150).show()
+df.groupby(df['KERULET']).count().show()
+df.registerTempTable("people")
+# The result is the a normal RDD, with all the RDD operations
+expensiveHomes = sqlContext.sql("SELECT KERULET,AVG(AR) FROM ingatlan GROUP BY KERULET")
+# Write it 
+
+
+=================================================
+
+
+# 3: Pandas
+=================================================
+--packages com.databricks:spark-csv_2.10:1.0.3
+sudo dnf install python-devel.x86_64 libxml2-devel.x86_64 libxslt-devel.x86_64
+df = sqlContext.read.format('com.databricks.spark.csv').options(header='true').load('ingatlan')
+pdf = df.toPandas()
+pdf.mean()
+
+
+# 3: Parquet demo
+=================================================
+# Increase memory 
+#  IPYTHON=1 /opt/spark-1.4.0-bin-hadoop2.6/bin/pyspark --driver-memory 4G
+i.write.format("parquet").mode("append").partitionBy("KERULET").save("mytables")
+cd mytables/
+cd mytables/

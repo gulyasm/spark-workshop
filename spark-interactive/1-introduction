@@ -1,0 +1,51 @@
+# Scala shell
+val myrdd = sc.parallelize(Array(441,2,4,3))
+val multiplied = myrdd.map((x: Int) => 2*x)
+val result = multiplied.filter((x: Int) => x > 10)
+result.collect()
+result.top()
+
+
+# Python shell
+IPYTHON=1 /opt/spark-1.4.0-bin-hadoop2.6/bin/pyspark
+
+rdd = sc.parallelize([1,2,35,6])
+multiplied = rdd.map(lambda x: 2*x)
+result = multiplied.filter(lambda x: x > 10)
+result.collect()
+result.top()
+
+# Show: Python API documentation
+multiplied.sample(False,.7,34).collect()
+
+IPYTHON_OPTS="notebook" IPYTHON=1 /opt/spark-1.4.0-bin-hadoop2.6/bin/pyspark
+# Do the same as with the console.
+type(result) 
+
+
+# Hello word python
+textFile = sc.textFile("../data/war_peace_text")
+keyword = ""
+linesWithKeyword = textFile.filter(lambda x: keyword in x)
+splitted = linesWithKeyword.flatMap(lambda x: x.split())
+result = splitted.map(lambda x: (x,1)).reduceByKey(lambda a,b: a+b)
+
+result.map(lambda x: (x[1],x[0])).sortByKey().top(10)
+
+
+# Hello word scala
+val textFile = sc.textFile()
+val keyword = ""
+val linesWithKeyword = textFile.filter(line => line.contains(keyword))
+val splitted = linesWithKeyword.flatMap(line => line.split(" "))
+val result = splitted.map(word => (word, 1)).reduceByKey((a, b) => a + b)
+result.top()
+
+# Java
+Maven project
+Add nightly repository
+Add pom dependencies
+App1: Simple list multiplication and writing.
+App2: Word count.
+App3: Twitter sentiment analysis.
+
