@@ -1,3 +1,6 @@
 .idea
 target/
 *.iml
+.ipynb_checkpoints
+derby.log
+metastore_db
